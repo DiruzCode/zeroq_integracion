@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="description" content="Conoce cómo opera la principal conexión entre la Región Metropolitana y la zona de Valparaíso.">
+	<meta name="keywords" content="autopistas chile, autopista central, estacionamientos santiago, estacionamientos saba, ruta 68, ruta viña del mar, tag, autopase, beneficios tag">
+	<!-- CSS -->
+</head>
+
+<body>
+	<div id="interior_wrap" class="quees">
+		<div id="zero-q" class="clearfix">
+			<div class="zero-q-wrap clear">
+				<!-- Titulo -->
+				<div class="row middle-xs">
+					<div class="col-xs-12 col-sm-6">
+						<img src="" alt="" width="84">
+						<h1><span>Solicita tu</span> Número de Atención</h1>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<p>Qui dolorem ipsum, quia dolor sit amet consectetur adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dlorem ipsum, quia dolor sit amet consectetur adipisci velit, sed quia non numquam eius mod.</p>
+					</div>
+				</div>
+				<div class="form-zero-q {{if $sCaptcha == ''}}servipag_sin_captcha{{/if}}">
+					<div class="form-field">
+						<!-- SELECCION DE SUCURSAL-->
+						<form id="" method="post" action="">
+							<div class="row middle-xs" id="user_register">
+								<div class="col-xs-12 col-sm-3">
+									<label for="tipo">Rut</label>
+									<input type="text" class="zeroq-input" placeholder="RUT" id="rut"/>
+									<label class="label-error" id="error_rut"></label>
+								</div>
+								<div class="col-xs-12 col-sm-3">
+									<label for="tipo">Nombre Completo</label>
+									<input type="text" class="zeroq-input" placeholder="Nombre Completo" id="name"/>
+									<label class="label-error" id="error_name"></label>
+								</div>
+								<div class="col-xs-12 col-sm-3">
+									<label for="tipo">Correo electronico</label>
+									<input type="text" class="zeroq-input" placeholder="Correo electronico" id="email"/>
+									<label class="label-error" id="error_email"></label>
+								</div>
+								<div class="col-xs-12 col-sm-3">
+									<input class="btn btn-color-zero-q mt20" data-modal="modal-atencion" name="Solicitar" id="registrar_usuario" type="button" value="Solicitar" />
+								</div>
+							</div>
+							<div class="hide row" id="select_option">
+								<div class="col-xs-12 col-sm-6">
+									<label for="tipo">Seleccione Sede</label>
+									<!-- Tipo de contacto -->
+									<select name="oficina" id="oficina" class="selectyze">
+										<option value="0">Selecciona una oficina</option>
+										<option value="autopase-san-bernardo;144">San Bernardo</option>
+					          <option value="autopase-mall-plaza-norte;231">Mall plaza norte</option>
+					          <option value="autopase-mall-plaza-vespucio;210">Mall plaza vespucio</option>
+					          <option value="autopase-san-diego;229">San diego</option>
+					          <option value="autopase-vina-del-mar;153">Viña del mar</option>
+	                </select>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<label for="tipo">Tipo de Servicio</label>
+									<!-- Tipo de contacto -->
+									<select name="servicio" id="servicio" class="selectyze">
+											<option value="0">Selecciona un tipo de servicio</option>
+	                </select>
+								</div>
+							</div>
+						</form>
+
+						<!-- DESPLIEGUE DE SUCURSAL CLASE HIDE  -->
+						<form id="form-content-attention" class="hide no-gutters">
+							<div class="row middle-sm form-zero-q-w">
+								<div class="col-xs-12 col-sm-4 ">
+                  <h1 id="office_name"></h1>
+									<div class="linea"></div>
+									<img src="" width="31" alt="" class="leftSide">
+									<p id="office_street"></p>
+								</div>
+								<div class="col-xs-12 col-sm-4 ">
+									<h2 id="service_name"></h2>
+									<p class="espera" id="estimate_time"></p>
+									<div class="linea"></div>
+									<p class="atencion" id="attention_number"></p>
+									<p class="siguiente mb20" id="attention_number_next"></p>
+								</div>
+								<div class="col-xs-12 col-sm-4">
+									<div style="text-align: center;">
+										<input class="btn btn-azul-zero-q" name="Atencion" onclick="crateTicket()" type="button" value="Solicitar Nº Atención" />
+										<input class="btn btn-verde-zero-q mt20" name="Reserva" id="get_reservation" type="button" value="Reservar Hora" />
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modales -->
+	<!--MODAL SOLICITA NUMERO DE ATENCION PASO 1-->
+	<div class="md-modal md-effect-1" id="modal-atencion">
+		<div class="md-content modal-solicita md-zeroq">
+			<div>
+				<button class="md-close" id="close_attention">X</button>
+				<h2>Solicita tu Número de Atención:<span id="service_name_attention"></span></h2>
+				<h1 id="office_name_attention"></h1>
+				<p class="md-zeroq-direccion" id="office_street_attention"></p>
+				<!--despliege de numero asignado por el sistema PASO 2 -->
+				<div class="no-gutters">
+					<div class="row center-xs">
+						<div class="col-xs-12 col-md-6">
+							<div class="zeroq-ticket">
+								<h2>Nº de Atención en Curso</h2>
+								<h1 id="attention_number_current"></h1>
+								<div class="personas">
+									<p>8 personas en fila</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6">
+							<div class="zeroq-ticket-blue">
+								<h2>Tú Nº de Atención es</h2>
+								<h1 id="attention_number_person"></h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--MODAL RESERVA HORA-->
+	<div class="md-modal md-effect-1" id="modal-reserva">
+		<div class="md-content modal-reserva md-zeroq">
+			<div>
+				<button class="md-close" id="close_reserve">X</button>
+				<h2>Seleccione el día y hora de su reserva</h2>
+				<h1 id="office_name_reserve"></h1>
+				<p class="md-zeroq-direccion" id="office_street_reserve"></p>
+				<div class="no-gutters">
+					<div class="row show" id="calendar_choose">
+						<div class="col-xs-12">
+							<div class="calendar">
+								<input id="datetimepicker" type="text">
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="md-footer">
+								<button type="button" name="button" class="btn btn-verde-zero-q reverse" id="ccc">Cancelar</button>
+								<button type="button" name="button" class="btn btn-verde-zero-q" id="reserve_hours">Reservar Hora</button>
+							</div>
+						</div>
+					</div>
+					<div class="row hide" id="calendar_response">
+						<div class="response-ticket">
+							<span>su reserva de hora es para el</span>
+							<h1 id="text_response"></h1>
+						</div>
+					</div>
+					<div class="row hide" id="calendar_error">
+						<div class="response-error">
+							<span>No es posible realizar una reserva en el horario seleccionado</span>
+							<span>Favor escoger otro.</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--FIN MODAL RESERVA DE HORA-->
+	<div class="md-overlay"></div>
+	<script src="jquery.js"></script>
+	<script src="axios.min.js"></script>
+	<script src="pheonix.js"></script>
+	<script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
