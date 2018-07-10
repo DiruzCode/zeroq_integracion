@@ -1,0 +1,72 @@
+{
+  "_args": [
+    [
+      "phoenix@1.3.0",
+      "/home/ricardocastillo/Escritorio/SVN PROYECTOS/autopista/html/resources/js/autopase/zeroq"
+    ]
+  ],
+  "_from": "phoenix@1.3.0",
+  "_id": "phoenix@1.3.0",
+  "_inBundle": false,
+  "_integrity": "sha512-g1I6kJKTQx7wGsJCc2b1RfXeHUfITTV5kdqJPFoqmrGDfFEKQIrQkkBtv8QeJ0s1iN9+vvryrQLv+4SfmH/wqg==",
+  "_location": "/phoenix",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "phoenix@1.3.0",
+    "name": "phoenix",
+    "escapedName": "phoenix",
+    "rawSpec": "1.3.0",
+    "saveSpec": null,
+    "fetchSpec": "1.3.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/phoenix/-/phoenix-1.3.0.tgz",
+  "_spec": "1.3.0",
+  "_where": "/home/ricardocastillo/Escritorio/SVN PROYECTOS/autopista/html/resources/js/autopase/zeroq",
+  "author": {
+    "name": "Chris McCord",
+    "email": "chris@chrismccord.com",
+    "url": "http://www.phoenixframework.org"
+  },
+  "bugs": {
+    "url": "https://github.com/phoenixframework/phoenix/issues"
+  },
+  "description": "The official JavaScript client for the Phoenix web framework.",
+  "devDependencies": {
+    "babel-brunch": "~6.0.0",
+    "brunch": "~2.6.5",
+    "documentation": "^4.0.0-rc.1",
+    "jsdom": "9.8.3",
+    "jsdom-global": "2.1.0",
+    "mocha": "~2.4.4",
+    "mock-socket": "^6.0.1",
+    "sinon": "^1.17.6",
+    "uglify-js-brunch": "~2.0.1"
+  },
+  "files": [
+    "README.md",
+    "LICENSE.md",
+    "package.json",
+    "priv/static/phoenix.js",
+    "assets/js/phoenix.js"
+  ],
+  "homepage": "https://github.com/phoenixframework/phoenix#readme",
+  "license": "MIT",
+  "main": "./priv/static/phoenix.js",
+  "name": "phoenix",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/phoenixframework/phoenix.git"
+  },
+  "scripts": {
+    "build": "brunch build",
+    "docs": "documentation build assets/js/phoenix.js -f html -o doc/js",
+    "test": "mocha ./assets/test/**/*.js --compilers js:babel-register -r jsdom-global/register",
+    "watch": "brunch watch"
+  },
+  "version": "1.3.0"
+}

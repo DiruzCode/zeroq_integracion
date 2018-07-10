@@ -1,6 +1,5 @@
-const _AXIOS = this.axios;
-const _SOCKET = this.Socket;
 
+import { Socket } from './phoenix/assets/js/phoenix.js';
 let LOCAL_NAME = '';
 let CURRENT_NUMBER = '';
 let CURRENT_OFFICE_ID = '';
@@ -20,7 +19,7 @@ let userConnectOpen = false;
 let GlobalChannel = [];
 let channelData = [];
 
-let SOCKET = new _SOCKET(SOCKET_CONNECT, {
+let SOCKET = new Socket(SOCKET_CONNECT, {
   params: {}
 });
 
@@ -76,6 +75,15 @@ monthname[11] = "Diciembre";
     });
 
     $('#registrar_usuario').click(function(){
+
+      if( !valid_rut($('#rut').val()) || !valid_email($('#email').val())){
+        return false;
+      };
+
+      if($('#name').val() == ''){
+        $('#error_name').text('Debe ingresar un nombre');
+        return false;
+      };
 
       USERBASE.name = $('#name').val().trim();
       USERBASE.email = $('#email').val().trim();
@@ -134,7 +142,7 @@ function init(){
     return false;
   }
 
-  let data = _AXIOS.post(URLBASE+'login/user', {
+  let data = axios.post(URLBASE+'login/user', {
     uid: uid,
     user: USERBASE,
   }).then(function (response) {
@@ -157,7 +165,7 @@ function connect_to_channel(){
 
   console.log('function connect_to_channel()');
   console.log("TOKEN CANAL  : "  +USERBASE.token);
-  GlobalChannel = SOCKET.channel(`web:${LOCAL_NAME}`, USERBASE.token);
+  GlobalChannel = SOCKET.channel(`web:${LOCAL_NAME}`, {token: USERBASE.token});
 
   GlobalChannel.join()
     .receive("ok", local => {
@@ -188,30 +196,41 @@ function connect_to_channel(){
 
   // Se recibe el tiempo estimado de espera de la fila
   GlobalChannel.on("ticket:created", ticket => {
-    console.log("ticket:created", ticket);
-    $('#attention_number_person').text(ticket.prefix +ticket.number);
-    $('#attention_number_current').text(CURRENT_NUMBER);
+    console.log("ticket:created", ticket.user_id);
+    $("#modal-atencion").addClass("md-show");
+    if(ticket.user_id === USERBASE.userId){
+      $('#attention_number_person').text(ticket.prefix +ticket.number);
+      $('#attention_number_current').text(CURRENT_NUMBER);
+      console.log("mi ticket es : "+ ticket.prefix+'-'+ticket.number);
+    }
   });
 
 }
 
+window.addEventListener('load', function(){
 
-function crateTicket(){
-  console.log("crear ticket");
-  let line_id = $('#servicio').val();
-  let user_id = USERBASE.userId;
-  console.log("line_id : ", line_id);
-  console.log("user_id : ", user_id);
+  let create  = document.querySelector("#create_ticket")
 
-  GlobalChannel.push("ticket:new", {
-    line_id,
-    user_id
-  }).receive("ok", ticket => {
-      console.log(`ok`, ticket);
-  }).receive("error", res => {
-      console.log(`err`, res)
-  });
-}
+  create.addEventListener("click", event => {
+    console.log("crear ticket");
+    let line_id = $('#servicio').val();
+    let user_id = USERBASE.userId;
+    console.log("line_id : ", line_id);
+    console.log("user_id : ", user_id);
+
+    GlobalChannel.push("ticket:new", {
+      line_id,
+      user_id
+    }, 10000)
+     .receive("ok", (ticket) => console.log("created message", ticket) )
+     .receive("error", (reasons) => console.log("create failed", reasons) )
+     .receive("timeout", () => console.log("Networking issue...") );
+
+
+  })
+
+});
+
 
 function renderData(){
   console.log('function renderData()');
@@ -228,9 +247,10 @@ function renderData(){
 
   $('#servicio').empty().append('<option selected="selected" value="0">Selecciona un tipo de servicio</option>');
 
-  _AXIOS.get(URLBASE+'api/v1/offices/'+CURRENT_OFFICE_ID+'/hours').then(function (response) {
+  axios.get(URLBASE+'api/v1/offices/'+CURRENT_OFFICE_ID+'/hours').then(function (response) {
     HOUR_FROM = response.data.data[0].from;
     HOUR_TO = response.data.data[0].to;
+    calendar();
   }).catch(function (error) {
     console.log(error);
   });
@@ -266,7 +286,7 @@ function reserve_hours(){
     line_id: $('#servicio').val()
   };
 
-  let data = _AXIOS.post(URLBASE+'api/v1/user/reserves',
+  let data = axios.post(URLBASE+'api/v1/user/reserves',
     { reserve },
     { headers: { Authorization: USERBASE.token }
   }).then(function (response) {
@@ -317,6 +337,23 @@ function changeClass(param){
     $('#form-content-attention').removeClass('show');
     $('#form-content-attention').addClass('hide');
   }
+}
+
+function calendar(){
+
+  $.datetimepicker.setLocale('es');
+  jQuery('#datetimepicker').datetimepicker({
+    step:15,
+    format:'Y-m-d H:i',
+    inline:true,
+    lang:'es',
+    minDate:'yesterday',
+    minTime:HOUR_FROM,
+    maxTime:HOUR_TO,
+    onGenerate:function( hu ) {
+      jQuery(this).find('.xdsoft_date.xdsoft_day_of_week0').addClass('xdsoft_disabled');
+    }
+  });
 }
 
 function textResponseReserve(paramDate){
