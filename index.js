@@ -5,13 +5,13 @@ let CURRENT_NUMBER = '';
 let CURRENT_OFFICE_ID = '';
 let HOUR_FROM = '';
 let HOUR_TO = '';
-const UUID = '9bcf6729-8b40-424b-b96d-460f0d9bd4ef';
+const UUID = '1234566789-asdf';
 const SOCKET_CONNECT = 'wss://zeroq.cl/socket';
 const URLBASE = 'https://zeroq.cl/';
 const USERBASE = {
-  name: '',
-  email: '',
-  rut: ''
+  name: 'asdf',
+  email: 'asdf1234@autopase.cl',
+  rut: '1234567-8'
 };
 let uid;
 
@@ -196,7 +196,7 @@ function connect_to_channel(){
 
   // Se recibe el tiempo estimado de espera de la fila
   GlobalChannel.on("ticket:created", ticket => {
-    console.log("ticket:created", ticket.user_id);
+    console.log("ticket:created", ticket);
     $("#modal-atencion").addClass("md-show");
     if(ticket.user_id === USERBASE.userId){
       $('#attention_number_person').text(ticket.prefix +ticket.number);
@@ -213,7 +213,7 @@ window.addEventListener('load', function(){
 
   create.addEventListener("click", event => {
     console.log("crear ticket");
-    let line_id = $('#servicio').val();
+    let line_id = Number($('#servicio').val());
     let user_id = USERBASE.userId;
     console.log("line_id : ", line_id);
     console.log("user_id : ", user_id);
